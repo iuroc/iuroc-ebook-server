@@ -4,13 +4,13 @@
 
 ## 项目说明
 
-- 拟作为个人毕业设计项目，项目即日起陆续完成开发。
-- 项目书刊数据来自超星歌德电子书 API，仅使用其学习测试使用，禁止任何人非法使用数据，如导致问题由使用者自行承担。
-- 项目 AI 增强功能由第三方 API 完成，例如 OpenAI，后续可能根据实际情况调整。
+- 本项目拟作为个人毕业设计项目，即日起陆续开展开发工作。
+- 免责声明：本项目所使用的书刊数据来自超星歌德电子书 API，仅供学习和测试使用。禁止任何人非法使用数据，如因此引发问题，责任由使用者自行承担。
+- 项目中的 AI 增强功能由第三方 API 提供，例如 OpenAI。未来可能根据实际情况进行调整。
 - 本项目的前身项目是 [poncon-books](https://github.com/iuroc/poncon-books)，以下是几个核心的关联包：
-    - [gede-book-api](https://github.com/iuroc/gede-book-api)：提供访问歌德图书和期刊资源的方法接口
+    - [gede-book-api](https://github.com/iuroc/gede-book-api)：提供访问歌德图书和期刊资源的接口方法
     - [gede-book-update](https://github.com/iuroc/gede-book-update)：提供书库更新能力
-    - [gede-book-server](https://github.com/iuroc/gede-book-server)：提供一个 Express Router 快速接入歌德电子书 API
+    - [gede-book-server](https://github.com/iuroc/gede-book-server)：提供一个用于快速接入歌德电子书 API 的 Express Router
 
 ## 功能模块
 
