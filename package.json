@@ -1,46 +1,26 @@
 {
-  "name": "iuroc-ebook",
-  "version": "1.0.0",
-  "description": "基于超星歌德电子书 API 的在线书刊阅读网站",
-  "main": "backend/js/main.mjs",
-  "scripts": {
-    "start": "node backend/js/main.mjs",
-    "dev:tsc": "cd backend && tsc -w",
-    "dev:nodemon": "nodemon backend/js/main.mjs 8091",
-    "dev:vite": "cd frontend && vite",
-    "dev": "npm run build:tsc && concurrently \"npm run dev:tsc\" \"npm run dev:nodemon\" \"npm run dev:vite\"",
-    "build:tsc": "cd backend && tsc",
-    "build:vite": "cd frontend && vite build",
-    "build": "concurrently --raw \"npm run build:vite\" \"npm run build:tsc\""
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/iuroc/iuroc-ebook.git"
-  },
-  "keywords": [
-    "ebook",
-    "chaoxing",
-    "read",
-    "book",
-    "magazine",
-    "api",
-    "fetch"
-  ],
-  "author": "iuroc",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/iuroc/iuroc-ebook/issues"
-  },
-  "homepage": "https://github.com/iuroc/iuroc-ebook#readme",
-  "dependencies": {
-    "gede-book-server": "^1.0.1",
-    "vanjs-core": "^1.5.0",
-    "vanjs-router": "^1.2.3",
-    "vite": "^5.2.11"
-  },
-  "devDependencies": {
-    "@types/express": "^4.17.21",
-    "concurrently": "^8.2.2",
-    "nodemon": "^3.1.1"
-  }
+    "name": "iuroc-ebook",
+    "version": "1.0.0",
+    "description": "基于超星歌德电子书数据库的在线书刊阅读网站",
+    "keywords": [
+        "ebook",
+        "book",
+        "magazine",
+        "ai",
+        "chatgpt",
+        "reading"
+    ],
+    "homepage": "https://github.com/iuroc/iuroc-ebook#readme",
+    "bugs": {
+        "url": "https://github.com/iuroc/iuroc-ebook/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/iuroc/iuroc-ebook.git"
+    },
+    "license": "ISC",
+    "author": "iuroc",
+    "type": "module",
+    "main": "index.js",
+    "scripts": {}
 }
