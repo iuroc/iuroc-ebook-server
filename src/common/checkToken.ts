@@ -1,5 +1,5 @@
 import { Response, Request, NextFunction } from 'express'
-import { verify } from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 import { sendError } from './response.js'
 import { AppConfig } from './config.js'
 import { UserRepository } from './dataSource.js'
@@ -10,7 +10,7 @@ export async function checkTokenMiddleware(req: Request, res: Response, next: Ne
     try {
         const token = req.headers['token']
         if (typeof token != 'string') throw new Error('token 格式错误')
-        const userId = verify(token, AppConfig.jwtSecretKey) as string
+        const userId = jwt.verify(token, AppConfig.jwtSecretKey) as string
         const user = await UserRepository.findOne({
             where: {
                 id: parseInt(userId)
