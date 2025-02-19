@@ -9,6 +9,7 @@
         "magazine",
         "reading",
         "server",
+        "express",
         "typeorm"
     ],
     "author": "iuroc",
