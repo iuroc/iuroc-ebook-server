@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm'
 import { EbookConfig } from './config.js'
-import { Book, Category, entities as ebookEntities, Magazine, ReadItem } from 'gede-book-entity'
+import { Book, Category, entities as ebookEntities, Issue, Magazine, ReadItem } from 'gede-book-entity'
 
 export const EbookDataSource = new DataSource({
     type: 'mysql',
@@ -12,3 +12,4 @@ export const CategoryRepository = EbookDataSource.getRepository(Category)
 export const BookRepository = EbookDataSource.getRepository(Book)
 export const ReadItemRepository = EbookDataSource.getRepository(ReadItem)
 export const MagazineRepository = EbookDataSource.getRepository(Magazine)
+export const IssueRepository = EbookDataSource.getRepository(Issue)

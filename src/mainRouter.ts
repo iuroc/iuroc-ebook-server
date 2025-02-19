@@ -3,6 +3,7 @@ import express from 'express'
 import userLoginOrRegisterRouter from './router/user/loginOrRegister.js'
 import userDeleteRouter from './router/user/delete.js'
 import ebookCategoryRouter from './router/ebook/category.js'
+import ebookMagazineIssueRouter from './router/ebook/magazine/issue.js'
 import ebookItemRouter from './router/ebook/item.js'
 import { sendError } from './common/response.js'
 
@@ -17,6 +18,7 @@ router.use('/api/user/delete', userDeleteRouter)
 // [/api/ebook/book]
 
 // [/api/ebook/magazine]
+router.use('/api/ebook/magazine/issue', ebookMagazineIssueRouter)
 
 // [/api/ebook/common]
 router.use('/api/ebook/category', ebookCategoryRouter)
@@ -24,7 +26,7 @@ router.use('/api/ebook/item', ebookItemRouter)
 
 // [/api/openai]
 
-router.use((error: Error, _req: Request, res: Response, next: NextFunction) => {
+router.use((error: Error, _req: Request, res: Response, _next: NextFunction) => {
     sendError(res, error.message)
 })
 
