@@ -2,7 +2,10 @@
     "name": "iuroc-ebook-server",
     "version": "1.0.0",
     "description": "《基于鸿蒙与生成式AI的书刊阅读软件》毕业设计💕服务端",
-    "scripts": {},
+    "scripts": {
+        "start": "tsx src/main.ts",
+        "dev": "tsx watch src/main.ts"
+    },
     "keywords": [
         "ebook",
         "book",
@@ -12,6 +15,26 @@
         "express",
         "typeorm"
     ],
+    "type": "module",
     "author": "iuroc",
-    "license": "ISC"
+    "license": "ISC",
+    "devDependencies": {
+        "@types/express": "^5.0.0",
+        "@types/node": "^22.13.4",
+        "tsx": "^4.19.3"
+    },
+    "pnpm": {
+        "ignoredBuiltDependencies": [
+            "esbuild"
+        ],
+        "onlyBuiltDependencies": [
+            "esbuild"
+        ]
+    },
+    "dependencies": {
+        "express": "^4.21.2",
+        "joi": "^17.13.3",
+        "mysql2": "^3.12.0",
+        "typeorm": "^0.3.20"
+    }
 }
