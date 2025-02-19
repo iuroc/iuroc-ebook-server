@@ -15,3 +15,5 @@ export const EbookDataSource = new DataSource({
     ...EbookConfig.mysql,
     entities: ebookEntities
 })
+
+export const UserRepository = AppDataSource.getRepository(User)
