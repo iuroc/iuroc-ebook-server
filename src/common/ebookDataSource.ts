@@ -10,4 +10,5 @@ export const EbookDataSource = new DataSource({
 
 export const CategoryRepository = EbookDataSource.getRepository(Category)
 export const BookRepository = EbookDataSource.getRepository(Book)
+export const ReadItemRepository = EbookDataSource.getRepository(ReadItem)
 export const MagazineRepository = EbookDataSource.getRepository(Magazine)
