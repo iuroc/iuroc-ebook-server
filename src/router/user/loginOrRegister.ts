@@ -7,6 +7,7 @@ import jwt from 'jsonwebtoken'
 import { AppConfig } from '../../common/config.js'
 import { User } from '../../entity/User.js'
 
+/** 用户登录和注册聚合接口 */
 const router = Router()
 
 router.post('/', async (req, res) => {

@@ -2,20 +2,17 @@ import { Router } from 'express'
 import { checkTokenMiddleware } from '../../../common/checkToken.js'
 import Joi from 'joi'
 import { sendError, sendSuccess } from '../../../common/response.js'
-import { IssueRepository } from '../../../common/ebookDataSource.js'
+import { BookCatalogRepository, BookRepository } from '../../../common/ebookDataSource.js'
 
-/** 获取期刊的分期列表 */
+
+/** 获取图书信息和图书目录 */
 const router = Router()
 
 router.post('/', checkTokenMiddleware, (req, res) => {
     const { error, value } = Joi.object<{
-        magazineId: number
-        page: number
-        pageSize: number
+        bookId: number
     }>({
-        magazineId: Joi.number().required(),
-        page: Joi.number().default(0),
-        pageSize: Joi.number().default(72).max(120)
+        bookId: Joi.number().required()
     }).validate(req.body)
 
     if (error) {
@@ -23,14 +20,17 @@ router.post('/', checkTokenMiddleware, (req, res) => {
         return
     }
 
-    IssueRepository.find({
+    BookRepository.findOne({
         where: {
-            magazine: { id: value.magazineId }
+            id: value.bookId,
         },
-        take: value.pageSize,
-        skip: value.page * value.pageSize
-    }).then(result => {
-        sendSuccess(res, '获取成功', result)
+        relations: ['catalogs']
+    }).then(async book => {
+        if (!book) {
+            sendError(res, '没有找到该图书')
+            return
+        }
+        sendSuccess(res, '获取成功', book)
     }).catch(error => {
         if (error instanceof Error) {
             sendError(res, error.message)

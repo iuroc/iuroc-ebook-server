@@ -3,6 +3,7 @@ import { checkTokenMiddleware, getReqUser } from '../../common/checkToken.js'
 import { sendError, sendSuccess } from '../../common/response.js'
 import { UserRepository } from '../../common/appDataSource.js'
 
+/** 注销用户，删除该用户相关数据表记录 */
 const router = Router()
 
 router.post('/', checkTokenMiddleware, (req, res) => {
