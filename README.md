@@ -4,8 +4,8 @@
 
 ## 关联项目
 
-- [iuroc-ebook-scraper](https://github.com/iuroc/iuroc-ebook-scraper) 歌德电子书全盘库爬虫
-- [iuroc-ebook-harmony](https://github.com/iuroc/iuroc-ebook-harmony) 鸿蒙客户端 
+- [iuroc-ebook-scraper](https://github.com/iuroc/iuroc-ebook-scraper) 歌德电子书全盘库爬虫（导出 npm 包 `gede-book-entity`）
+- [iuroc-ebook-harmony](https://github.com/iuroc/iuroc-ebook-harmony) 鸿蒙客户端
 
 ## 项目信息
 

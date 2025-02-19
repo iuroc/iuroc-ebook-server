@@ -11,6 +11,9 @@ importers:
       express:
         specifier: ^4.21.2
         version: 4.21.2
+      gede-book-entity:
+        specifier: ^1.0.4
+        version: 1.0.4
       joi:
         specifier: ^17.13.3
         version: 17.13.3
@@ -434,6 +437,9 @@ packages:
     resolution: {integrity: sha512-aIL5Fx7mawVa300al2BnEE4iNvo1qETxLrPI/o05L7z6go7fCw1J6EQmbK4FmJ2AS7kgVF/KEZWufBfdClMcPg==}
     engines: {node: '>= 0.6'}
 
+  eventemitter3@5.0.1:
+    resolution: {integrity: sha512-GWkBvjiSZK87ELrYOSESUYeVIc9mvLLf/nXalMOS5dYrgZq9o5OVkbZAVM06CVxYsCwH9BDZFPlQTlPA1j4ahA==}
+
   express@4.21.2:
     resolution: {integrity: sha512-28HqgMZAmih1Czt9ny7qr6ek2qddF4FclbMzwhCREB6OFfH+rXAnuNCwo1/wFvrtbgsQDb4kSbX9de9lFbrXnA==}
     engines: {node: '>= 0.10.0'}
@@ -461,6 +467,12 @@ packages:
 
   function-bind@1.1.2:
     resolution: {integrity: sha512-7XHNxH7qX9xG5mIwxkhumTox/MIRNcOgDrxWsMt2pAr23WHp6MrRlN7FBSFpCpr+oVO0F744iUgR82nJMfG2SA==}
+
+  gede-book-api@1.0.22:
+    resolution: {integrity: sha512-XPDdZr8LwlZXlQQyrVZHH9VYAmozgAQiS45b7Q9TA5nq2BYS7pT/qGqLE6ZrL65Vhp1OinyyT+3McGsiCnEFeQ==}
+
+  gede-book-entity@1.0.4:
+    resolution: {integrity: sha512-ekZDVkDwdsOkdFJ+xGiFUkd2kJ/a3vA10iOJDM/ErbES6c4SiaFzXATkhdA8FwkmxGUYZW843JUX7PEXhpynUw==}
 
   generate-function@2.3.1:
     resolution: {integrity: sha512-eeB5GfMNeevm/GRYq20ShmsaGcmI81kIX2K9XQx5miC8KdHaC6Jm0qQ8ZNeGOi7wYB8OsdxKs+Y2oVuTFuVwKQ==}
@@ -628,6 +640,14 @@ packages:
   on-finished@2.4.1:
     resolution: {integrity: sha512-oVlzkg3ENAhCk2zdv7IJwd/QUD4z2RxRwpkcGY8psCVcCYZNq4wYnVWALHM+brtuJjePWiYF/ClmuDr8Ch5+kg==}
     engines: {node: '>= 0.8'}
+
+  p-queue@8.1.0:
+    resolution: {integrity: sha512-mxLDbbGIBEXTJL0zEx8JIylaj3xQ7Z/7eEVjcF9fJX4DBiH9oqe+oahYnlKKxm0Ci9TlWTyhSHgygxMxjIB2jw==}
+    engines: {node: '>=18'}
+
+  p-timeout@6.1.4:
+    resolution: {integrity: sha512-MyIV3ZA/PmyBN/ud8vV9XzwTrNtR4jFrObymZYnZqMmW0zA8Z17vnT0rBgFE/TlohB+YCHqXMgZzb3Csp49vqg==}
+    engines: {node: '>=14.16'}
 
   package-json-from-dist@1.0.1:
     resolution: {integrity: sha512-UEZIS3/by4OC8vL3P2dTXRETpebLI2NiI5vIrjaD/5UtrkFX/tNbwjTSRAGC/+7CAo2pIcBaRgWmcBBHcsaCIw==}
@@ -1237,6 +1257,8 @@ snapshots:
 
   etag@1.8.1: {}
 
+  eventemitter3@5.0.1: {}
+
   express@4.21.2:
     dependencies:
       accepts: 1.3.8
@@ -1298,6 +1320,33 @@ snapshots:
     optional: true
 
   function-bind@1.1.2: {}
+
+  gede-book-api@1.0.22: {}
+
+  gede-book-entity@1.0.4:
+    dependencies:
+      gede-book-api: 1.0.22
+      mysql2: 3.12.0
+      p-queue: 8.1.0
+      typeorm: 0.3.20(mysql2@3.12.0)
+    transitivePeerDependencies:
+      - '@google-cloud/spanner'
+      - '@sap/hana-client'
+      - better-sqlite3
+      - hdb-pool
+      - ioredis
+      - mongodb
+      - mssql
+      - oracledb
+      - pg
+      - pg-native
+      - pg-query-stream
+      - redis
+      - sql.js
+      - sqlite3
+      - supports-color
+      - ts-node
+      - typeorm-aurora-data-api-driver
 
   generate-function@2.3.1:
     dependencies:
@@ -1457,6 +1506,13 @@ snapshots:
   on-finished@2.4.1:
     dependencies:
       ee-first: 1.1.1
+
+  p-queue@8.1.0:
+    dependencies:
+      eventemitter3: 5.0.1
+      p-timeout: 6.1.4
+
+  p-timeout@6.1.4: {}
 
   package-json-from-dist@1.0.1: {}
 
