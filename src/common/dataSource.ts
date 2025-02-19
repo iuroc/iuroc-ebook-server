@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm'
-import { AppConfig, EbookConfig } from './config.example.js'
+import { AppConfig, EbookConfig } from './config.js'
 import { User } from '../entity/User.js'
 import { entities as ebookEntities } from 'gede-book-entity'
 
