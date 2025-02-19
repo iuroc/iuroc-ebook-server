@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { checkTokenMiddleware, getReqUser } from '../../common/checkToken.js'
 import { sendError, sendSuccess } from '../../common/response.js'
-import { UserRepository } from '../../common/dataSource.js'
+import { UserRepository } from '../../common/appDataSource.js'
 
 const router = Router()
 

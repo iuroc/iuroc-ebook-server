@@ -8,10 +8,10 @@ export type ApiResponse<T = null> = {
 }
 
 /** 发送成功响应 */
-export function sendSuccess<T = null>(res: Response, message: string, data: T) {
+export function sendSuccess<T = null>(res: Response, message: string, data?: T) {
     return res.send({
         success: true,
-        data,
+        data: data ?? null,
         message,
     } as ApiResponse)
 }

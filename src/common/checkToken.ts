@@ -2,7 +2,7 @@ import { Response, Request, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 import { sendError } from './response.js'
 import { AppConfig } from './config.js'
-import { UserRepository } from './dataSource.js'
+import { UserRepository } from './appDataSource.js'
 import { User } from '../entity/User.js'
 
 /** 校验 `headers` 中的 `token`，如果校验通过，则将对应的 `User` 对象挂载到 `req` 中，后续通过 {@link getReqUser} 获取 `User` 对象。 */

@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import Joi from 'joi'
 import { sendError, sendSuccess } from '../../common/response.js'
-import { UserRepository } from '../../common/dataSource.js'
+import { UserRepository } from '../../common/appDataSource.js'
 import { hashPassword, verifyPassword } from '../../common/bcrypt.js'
 import jwt from 'jsonwebtoken'
 import { AppConfig } from '../../common/config.js'
