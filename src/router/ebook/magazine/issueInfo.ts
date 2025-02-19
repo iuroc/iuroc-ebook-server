@@ -4,6 +4,7 @@ import Joi from 'joi'
 import { sendError, sendSuccess } from '../../../common/response.js'
 import { IssueRepository } from '../../../common/ebookDataSource.js'
 import { buildNestedCatalogs } from '../mixin.js'
+import { generateImagePath } from '../../../common/mixin.js'
 
 /** 获取期刊的信息和其中某分期的目录 */
 const router = Router()
@@ -31,6 +32,8 @@ router.post('/', checkTokenMiddleware, (req, res) => {
             return
         }
         issue.catalogs = buildNestedCatalogs(issue.catalogs)
+        issue.cover = await generateImagePath(issue.cover)
+        issue.magazine.cover = await generateImagePath(issue.magazine.cover)
         sendSuccess(res, '获取成功', issue)
     }).catch(error => {
         if (error instanceof Error) {

@@ -3,6 +3,8 @@ import { checkTokenMiddleware } from '../../common/checkToken.js'
 import { sendError, sendSuccess } from '../../common/response.js'
 import { ReadItemRepository } from '../../common/ebookDataSource.js'
 import Joi from 'joi'
+import { generateImagePath } from '../../common/mixin.js'
+import { Book } from 'gede-book-entity'
 
 /** 获取指定类型的（或全部类型）图书或期刊列表 */
 const router = Router()
@@ -30,7 +32,14 @@ router.post('/', checkTokenMiddleware, (req, res) => {
         relations: ['category'],
         take: value.pageSize,
         skip: value.page * value.pageSize
-    }).then(result => {
+    }).then(async result => {
+        for (const item of result) {
+            item.cover = await generateImagePath(item.cover)
+            const book = item as Book
+            if (book.bigCover) {
+                book.bigCover = await generateImagePath(book.bigCover)
+            }
+        }
         sendSuccess(res, '获取成功', result)
     }).catch(error => {
         if (error instanceof Error) {

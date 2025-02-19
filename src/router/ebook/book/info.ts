@@ -4,6 +4,7 @@ import Joi from 'joi'
 import { sendError, sendSuccess } from '../../../common/response.js'
 import { BookRepository } from '../../../common/ebookDataSource.js'
 import { buildNestedCatalogs } from '../mixin.js'
+import { generateImagePath } from '../../../common/mixin.js'
 
 
 /** 获取图书信息和图书目录 */
@@ -32,6 +33,8 @@ router.post('/', checkTokenMiddleware, (req, res) => {
             return
         }
         book.catalogs = buildNestedCatalogs(book.catalogs)
+        book.cover = await generateImagePath(book.cover)
+        book.bigCover = await generateImagePath(book.bigCover)
         sendSuccess(res, '获取成功', book)
     }).catch(error => {
         if (error instanceof Error) {

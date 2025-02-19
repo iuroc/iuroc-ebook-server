@@ -8,8 +8,11 @@ import ebookBookInfoRouter from './router/ebook/book/info.js'
 import ebookMagazineIssueInfoRouter from './router/ebook/magazine/issueInfo.js'
 import ebookItemRouter from './router/ebook/item.js'
 import { sendError } from './common/response.js'
+import { EbookConfig } from './common/config.js'
 
 const router = Router()
+
+router.use('/images', express.static(EbookConfig.imageDir))
 
 router.use(express.json())
 
