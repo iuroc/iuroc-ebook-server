@@ -1,22 +1,15 @@
 import express from 'express'
-import { AppConfig } from './common/config.js'
+import { AppConfig, EbookConfig } from './common/config.example.js'
 import mainRouter from './mainRouter.js'
 import { AppDataSource, EbookDataSource } from './common/dataSource.js'
+import { statSync } from 'fs'
 
-const task1 = '初始化应用数据库'
-console.log(`[${task1}] 开始`)
-await AppDataSource.initialize()
-console.log(`[${task1}] 结束`)
+if (!EbookConfig.imageDir || !statSync(EbookConfig.imageDir).isDirectory()) throw new Error('图片资源目录错误')
+await AppDataSource.initialize().then(() => console.log('应用数据库初始化完成'))
+await EbookDataSource.initialize().then(() => console.log('电子书数据库初始化完成'))
 
-const task2 = '初始化电子书数据库'
-console.log(`[${task2}] 开始`)
-await EbookDataSource.initialize()
-console.log(`[${task2}] 结束`)
-
-const task3 = `启动HTTP服务器`
-console.log(`[${task3}] 开始`)
 const app = express()
 app.use(mainRouter)
 app.listen(AppConfig.server.port, AppConfig.server.host, () => {
-    console.log(`[${task3}] 结束 - Server is running at http://${AppConfig.server.host}:${AppConfig.server.port}`)
+    console.log(`Server is running at http://${AppConfig.server.host}:${AppConfig.server.port}`)
 })
