@@ -9,9 +9,9 @@ const router = Router()
 
 router.post('/', checkTokenMiddleware, (req, res) => {
     const { error, value } = Joi.object<{
-        type?: Category['type']
+        type: Category['type']
     }>({
-        type: Joi.valid('book', 'magazine').empty('')
+        type: Joi.valid('book', 'magazine')
     }).validate(req.body)
 
     if (error) {
