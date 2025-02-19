@@ -1,5 +1,5 @@
 import express from 'express'
-import { AppConfig, EbookConfig } from './common/config.example.js'
+import { AppConfig, EbookConfig } from './common/config.js'
 import mainRouter from './mainRouter.js'
 import { AppDataSource, EbookDataSource } from './common/dataSource.js'
 import { statSync } from 'fs'
