@@ -5,6 +5,7 @@ import { Category } from 'gede-book-entity'
 import Joi from 'joi'
 import { sendError, sendSuccess } from '../../common/response.js'
 
+/** 获取图书和期刊的分类列表 */
 const router = Router()
 
 router.post('/', checkTokenMiddleware, (req, res) => {

@@ -4,6 +4,7 @@ import { sendError, sendSuccess } from '../../common/response.js'
 import { ReadItemRepository } from '../../common/ebookDataSource.js'
 import Joi from 'joi'
 
+/** 获取指定类型的（或全部类型）图书或期刊列表 */
 const router = Router()
 
 router.post('/', checkTokenMiddleware, (req, res) => {
