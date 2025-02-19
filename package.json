@@ -1,26 +1,16 @@
 {
-    "name": "iuroc-ebook",
+    "name": "iuroc-ebook-server",
     "version": "1.0.0",
-    "description": "基于超星歌德电子书数据库的在线书刊阅读网站",
+    "description": "《基于鸿蒙与生成式AI的书刊阅读软件》毕业设计💕服务端",
+    "scripts": {},
     "keywords": [
         "ebook",
         "book",
         "magazine",
-        "ai",
-        "chatgpt",
-        "reading"
+        "reading",
+        "server",
+        "typeorm"
     ],
-    "homepage": "https://github.com/iuroc/iuroc-ebook#readme",
-    "bugs": {
-        "url": "https://github.com/iuroc/iuroc-ebook/issues"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/iuroc/iuroc-ebook.git"
-    },
-    "license": "ISC",
     "author": "iuroc",
-    "type": "module",
-    "main": "index.js",
-    "scripts": {}
+    "license": "ISC"
 }
