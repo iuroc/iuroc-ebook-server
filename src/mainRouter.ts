@@ -5,6 +5,7 @@ import userDeleteRouter from './router/user/delete.js'
 import ebookCategoryRouter from './router/ebook/category.js'
 import ebookMagazineIssueRouter from './router/ebook/magazine/issue.js'
 import ebookBookInfoRouter from './router/ebook/book/info.js'
+import ebookMagazineIssueInfoRouter from './router/ebook/magazine/issueInfo.js'
 import ebookItemRouter from './router/ebook/item.js'
 import { sendError } from './common/response.js'
 
@@ -21,6 +22,7 @@ router.use('/api/ebook/book/info', ebookBookInfoRouter)
 
 // [/api/ebook/magazine]
 router.use('/api/ebook/magazine/issue', ebookMagazineIssueRouter)
+router.use('/api/ebook/magazine/issueInfo', ebookMagazineIssueInfoRouter)
 
 // [/api/ebook/common]
 router.use('/api/ebook/category', ebookCategoryRouter)
