@@ -14,7 +14,7 @@ export async function checkTokenMiddleware(req: Request, res: Response, next: Ne
         const user = await UserRepository.findOne({
             where: {
                 id: parseInt(userId)
-            }
+            },
         })
         if (!user) {
             throw new Error('用户不存在')

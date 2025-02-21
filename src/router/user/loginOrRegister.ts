@@ -16,7 +16,7 @@ router.post('/', async (req, res) => {
         password: string
     }>({
         username: Joi.string().regex(/^\w{4,30}$/).required(),
-        password: Joi.string().min(10).max(30).required()
+        password: Joi.string().regex(/^\S{10,30}$/).required()
     }).validate(req.body)
 
     if (error) {
