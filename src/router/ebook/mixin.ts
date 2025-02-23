@@ -29,13 +29,15 @@ export interface CatalogWithLevel {
     level?: number
 }
 
-
 export function addLevels(catalogs: CatalogWithLevel[], parentId: number | null = null, level: number = 0): CatalogWithLevel[] {
     return catalogs
         .filter(catalog => catalog.parentId === parentId)
+        .sort((a, b) => a.index - b.index) // 根据 index 排序
         .map(catalog => {
             const updatedCatalog = { ...catalog, level }
+            // 递归处理该项的子项
             const children = addLevels(catalogs, catalog.id, level + 1)
+            // 返回当前项及其子项
             return [updatedCatalog, ...children]
         })
         .flat()
