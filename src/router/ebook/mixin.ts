@@ -19,3 +19,24 @@ export function buildNestedCatalogs<T extends Catalog>(catalogs: T[]): T[] {
     })
     return nestedCatalogs
 }
+
+export interface CatalogWithLevel {
+    id: number
+    page: number
+    title: string
+    parentId: number | null
+    index: number
+    level?: number
+}
+
+
+export function addLevels(catalogs: CatalogWithLevel[], parentId: number | null = null, level: number = 0): CatalogWithLevel[] {
+    return catalogs
+        .filter(catalog => catalog.parentId === parentId)
+        .map(catalog => {
+            const updatedCatalog = { ...catalog, level }
+            const children = addLevels(catalogs, catalog.id, level + 1)
+            return [updatedCatalog, ...children]
+        })
+        .flat()
+}

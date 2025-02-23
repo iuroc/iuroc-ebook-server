@@ -3,8 +3,9 @@ import { checkTokenMiddleware } from '../../../common/checkToken.js'
 import Joi from 'joi'
 import { sendError, sendSuccess } from '../../../common/response.js'
 import { BookRepository } from '../../../common/ebookDataSource.js'
-import { buildNestedCatalogs } from '../mixin.js'
+import { addLevels, buildNestedCatalogs, CatalogWithLevel } from '../mixin.js'
 import { generateImagePath } from '../../../common/mixin.js'
+import { Book, Issue } from 'gede-book-entity'
 
 
 /** 获取图书信息和图书目录 */
@@ -32,10 +33,14 @@ router.post('/', checkTokenMiddleware, (req, res) => {
             sendError(res, '没有找到该图书')
             return
         }
-        book.catalogs = buildNestedCatalogs(book.catalogs)
         book.cover = await generateImagePath(book.cover)
         book.bigCover = await generateImagePath(book.bigCover)
-        sendSuccess(res, '获取成功', book)
+        const bookInfo: BookInfo = {
+            ...book,
+            catalogs: addLevels(book.catalogs)
+        }
+        // book.catalogs = buildNestedCatalogs(book.catalogs)
+        sendSuccess(res, '获取成功', bookInfo)
     }).catch(error => {
         if (error instanceof Error) {
             sendError(res, error.message)
@@ -43,4 +48,8 @@ router.post('/', checkTokenMiddleware, (req, res) => {
     })
 })
 
+
+
 export default router
+
+export type BookInfo = Omit<Book, 'catalogs'> & { catalogs: CatalogWithLevel[] }
