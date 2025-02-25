@@ -1,18 +1,19 @@
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from 'typeorm'
 import { User } from './User.js'
+import { BookAndIssueMixed } from './ReadHistory.js'
 
 /** 书架 */
 @Entity({ comment: '书架' })
-@Unique(['userId', 'readItemId'])
-export class BookShelf {
+@Unique(['userId', 'itemId', 'type'])
+export class BookShelf implements BookAndIssueMixed {
     @PrimaryGeneratedColumn()
     id!: number
 
-    /**
-     * read_item 表的记录 ID
-     */
     @Column('int', { comment: 'bookId or issueId' })
-    readItemId: number = 0
+    itemId!: number
+
+    @Column('varchar')
+    type!: 'book' | 'issue'
 
     @Column('int')
     userId!: number

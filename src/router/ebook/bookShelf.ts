@@ -2,13 +2,12 @@ import { Router } from 'express'
 import { checkTokenMiddleware, getReqUser } from '../../common/checkToken.js'
 import Joi from 'joi'
 import { sendError, sendSuccess } from '../../common/response.js'
-import { BookShelfRepository, ReadHistoryRepository } from '../../common/appDataSource.js'
-import { ReadItemRepository } from '../../common/ebookDataSource.js'
-import { In } from 'typeorm'
+import { BookShelfRepository } from '../../common/appDataSource.js'
+import { makeBookAndIssueMixedList } from './history.js'
 
 const router = Router()
 
-router.post('/', checkTokenMiddleware, (req, res) => {
+router.post('/list', checkTokenMiddleware, (req, res) => {
     const { error, value } = Joi.object<{
         page: number
         pageSize: number
@@ -33,19 +32,12 @@ router.post('/', checkTokenMiddleware, (req, res) => {
         },
         take: value.pageSize,
         skip: value.page * value.pageSize,
-    }).then(result => {
+    }).then(async result => {
         if (result.length == 0) {
             sendSuccess(res, '获取成功', [])
             return
         } else {
-            const readItemIds = result.map(item => item.readItemId)
-            ReadItemRepository.find({
-                where: {
-                    id: In(readItemIds)
-                }
-            }).then(readItems => {
-                sendSuccess(res, '获取成功', readItems)
-            })
+            sendSuccess(res, '获取成功', await makeBookAndIssueMixedList(result))
         }
     })
 })
