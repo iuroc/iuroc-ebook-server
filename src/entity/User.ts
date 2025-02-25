@@ -1,6 +1,7 @@
-import { Column, CreateDateColumn, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, CreateDateColumn, Entity, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { BookShelf } from './BookShelf.js'
 
-@Entity()
+@Entity({ comment: '用户表' })
 export class User {
     @PrimaryGeneratedColumn()
     id!: number
@@ -14,4 +15,10 @@ export class User {
 
     @CreateDateColumn()
     createAt!: Date
+
+    @OneToMany(() => BookShelf, bookShelf => bookShelf.user)
+    bookShelfs?: BookShelf[]
+
+    @OneToMany(() => BookShelf, readHistory => readHistory.user)
+    readHistorys?: BookShelf[]
 }
