@@ -8,6 +8,7 @@ import ebookMagazineIssueRouter from './router/ebook/magazine/issue.js'
 import ebookBookInfoRouter from './router/ebook/book/info.js'
 import ebookMagazineIssueInfoRouter from './router/ebook/magazine/issueInfo.js'
 import ebookItemRouter from './router/ebook/item.js'
+import ebookContentRouter from './router/ebook/content.js'
 import { sendError } from './common/response.js'
 import { EbookConfig } from './common/config.js'
 
@@ -32,6 +33,7 @@ router.use('/api/ebook/magazine/issueInfo', ebookMagazineIssueInfoRouter)
 // [/api/ebook/common]
 router.use('/api/ebook/category', ebookCategoryRouter)
 router.use('/api/ebook/item', ebookItemRouter)
+router.use('/api/ebook/content', ebookContentRouter)
 
 // [/api/openai]
 

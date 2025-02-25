@@ -15,8 +15,8 @@ importers:
         specifier: ^4.21.2
         version: 4.21.2
       gede-book-entity:
-        specifier: ^1.0.4
-        version: 1.0.4
+        specifier: ^1.0.6
+        version: 1.0.6
       joi:
         specifier: ^17.13.3
         version: 17.13.3
@@ -496,8 +496,8 @@ packages:
   gede-book-api@1.0.22:
     resolution: {integrity: sha512-XPDdZr8LwlZXlQQyrVZHH9VYAmozgAQiS45b7Q9TA5nq2BYS7pT/qGqLE6ZrL65Vhp1OinyyT+3McGsiCnEFeQ==}
 
-  gede-book-entity@1.0.4:
-    resolution: {integrity: sha512-ekZDVkDwdsOkdFJ+xGiFUkd2kJ/a3vA10iOJDM/ErbES6c4SiaFzXATkhdA8FwkmxGUYZW843JUX7PEXhpynUw==}
+  gede-book-entity@1.0.6:
+    resolution: {integrity: sha512-Lr0SPVdmFUaYT6sIVNZQuqTolC/ra8mwXkT+ViHZyRzdSdHOQDPxC1NYfpu16nGNfqjM25atqmej84FbUKc9ng==}
 
   generate-function@2.3.1:
     resolution: {integrity: sha512-eeB5GfMNeevm/GRYq20ShmsaGcmI81kIX2K9XQx5miC8KdHaC6Jm0qQ8ZNeGOi7wYB8OsdxKs+Y2oVuTFuVwKQ==}
@@ -1399,7 +1399,7 @@ snapshots:
 
   gede-book-api@1.0.22: {}
 
-  gede-book-entity@1.0.4:
+  gede-book-entity@1.0.6:
     dependencies:
       gede-book-api: 1.0.22
       mysql2: 3.12.0
