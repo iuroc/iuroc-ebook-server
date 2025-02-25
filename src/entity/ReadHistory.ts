@@ -1,7 +1,8 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from 'typeorm'
 import { User } from './User.js'
 
 @Entity({ comment: '阅读历史' })
+@Unique(['userId', 'readItemId'])
 export class ReadHistory {
     @PrimaryGeneratedColumn()
     id!: number
@@ -18,7 +19,10 @@ export class ReadHistory {
     @CreateDateColumn()
     createAt!: Date
 
-    @ManyToOne(() => User, user => user.readHistorys, { onDelete: 'CASCADE' })
+    @Column('int')
+    userId!: number
+
+    @ManyToOne(() => User, user => user.readHistorys, { onDelete: 'CASCADE', nullable: false })
     user?: User
 
     /** 更新时间，可以作为最近阅读时间 */

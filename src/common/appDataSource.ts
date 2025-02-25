@@ -12,3 +12,5 @@ export const AppDataSource = new DataSource({
 })
 
 export const UserRepository = AppDataSource.getRepository(User)
+export const ReadHistoryRepository = AppDataSource.getRepository(ReadHistory)
+export const BookShelfRepository = AppDataSource.getRepository(BookShelf)

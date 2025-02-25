@@ -20,7 +20,7 @@ router.post('/', checkTokenMiddleware, (req, res) => {
         type: Joi.valid('book', 'issue').required(),
         itemId: Joi.number().required(),
         startBookPage: Joi.number().min(1).default(1),
-        bookPageCount: Joi.number().default(30),
+        bookPageCount: Joi.number().default(30).max(120),
     }).validate(req.body)
 
     if (error) {
