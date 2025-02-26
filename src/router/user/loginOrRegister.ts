@@ -39,7 +39,7 @@ router.post('/', async (req, res) => {
         const newUser = insertResult.generatedMaps[0] as User
         delete (newUser as Partial<User>).passwordHash
         sendSuccess(res, '注册成功', {
-            user: insertResult.generatedMaps[0],
+            user: { ...insertResult.generatedMaps[0], username: value.username },
             token: jwt.sign(newUser.id.toString(), AppConfig.jwtSecretKey)
         })
     } else {

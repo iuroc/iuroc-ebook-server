@@ -11,7 +11,7 @@ export class ReadHistory implements BookAndIssueMixed {
     itemId!: number
 
     @Column('varchar')
-    type!: 'book' | 'issue'
+    type!: BookAndIssueMixed['type']
 
     @Column('int', { comment: '当前阅读到的页码' })
     currentBookPage!: number

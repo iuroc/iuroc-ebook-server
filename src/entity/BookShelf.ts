@@ -13,7 +13,7 @@ export class BookShelf implements BookAndIssueMixed {
     itemId!: number
 
     @Column('varchar')
-    type!: 'book' | 'issue'
+    type!: BookAndIssueMixed['type']
 
     @Column('int')
     userId!: number

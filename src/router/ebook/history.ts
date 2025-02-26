@@ -3,7 +3,7 @@ import { checkTokenMiddleware, getReqUser } from '../../common/checkToken.js'
 import Joi from 'joi'
 import { sendError, sendSuccess } from '../../common/response.js'
 import { ReadHistoryRepository } from '../../common/appDataSource.js'
-import { BookRepository, IssueRepository, ReadItemRepository } from '../../common/ebookDataSource.js'
+import { BookRepository, IssueRepository } from '../../common/ebookDataSource.js'
 import { In } from 'typeorm'
 import { BookAndIssueMixed, ReadHistory } from '../../entity/ReadHistory.js'
 import { Book, Issue } from 'gede-book-entity'
@@ -86,10 +86,9 @@ export async function makeBookAndIssueMixedList(items: BookAndIssueMixed[]) {
 }
 
 router.post('/get', checkTokenMiddleware, (req, res) => {
-    const { error, value } = Joi.object<{
-        readItemId: number
-    }>({
-        readItemId: Joi.number().required()
+    const { error, value } = Joi.object<BookAndIssueMixed>({
+        itemId: Joi.number().required(),
+        type: Joi.string().valid('book', 'issue').required()
     }).validate(req.body)
 
     if (error) {
@@ -102,7 +101,8 @@ router.post('/get', checkTokenMiddleware, (req, res) => {
     ReadHistoryRepository.findOne({
         where: {
             user: { id: currentUser.id },
-            itemId: value.readItemId
+            type: value.type,
+            itemId: value.itemId
         },
     }).then(result => {
         if (!result) {
@@ -114,7 +114,41 @@ router.post('/get', checkTokenMiddleware, (req, res) => {
 })
 
 router.post('/update', checkTokenMiddleware, (req, res) => {
+    const { error, value } = Joi.object<{
+        /** Book 或 Issue 的 ID */
+        itemId: number
+        type: BookAndIssueMixed['type']
+        currentBookPage: number
+    }>({
+        itemId: Joi.number().required(),
+        type: Joi.string().valid('book', 'issue').required(),
+        currentBookPage: Joi.number().required()
+    }).validate(req.body)
 
+    if (error) {
+        sendError(res, error.message)
+        return
+    }
+
+    const currentUser = getReqUser(req)
+
+    ReadHistoryRepository.update({
+        user: { id: currentUser.id },
+        type: value.type,
+        itemId: value.itemId
+    }, {
+        currentBookPage: value.currentBookPage
+    }).then(result => {
+        if (result.affected) {
+            sendSuccess(res, '更新成功')
+        } else {
+            sendError(res, '更新失败，记录可能不存在')
+        }
+    }).catch(error => {
+        if (error instanceof Error) {
+            sendError(res, '更新失败')
+        }
+    })
 })
 
 export default router

@@ -5,13 +5,14 @@ import { sendError, sendSuccess } from '../../common/response.js'
 import { BookContentRepository, MagazineContentRepository } from '../../common/ebookDataSource.js'
 import { MoreThan } from 'typeorm'
 import { BookContent, MagazineContent } from 'gede-book-entity'
+import { BookAndIssueMixed } from '../../entity/ReadHistory.js'
 
 /** 获取图书或期刊的正文 */
 const router = Router()
 
 router.post('/', checkTokenMiddleware, (req, res) => {
     const { error, value } = Joi.object<{
-        type: 'book' | 'issue',
+        type: BookAndIssueMixed['type'],
         /** Book 或 Issue 的 ID */
         itemId: number
         startBookPage: number
