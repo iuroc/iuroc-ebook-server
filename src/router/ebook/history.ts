@@ -45,6 +45,7 @@ router.post('/list', checkTokenMiddleware, (req, res) => {
     })
 })
 
+/** 将阅读历史或书架的数据库记录（只有 bookId 或 issueId），转换为包含书刊信息的记录 */
 export async function makeBookAndIssueMixedList(items: BookAndIssueMixed[]) {
     const bookIds = items.filter(item => item.type == 'book').map(item => item.itemId)
     const issueIds = items.filter(item => item.type == 'issue').map(item => item.itemId)
