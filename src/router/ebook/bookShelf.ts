@@ -72,4 +72,52 @@ router.post('/get', checkTokenMiddleware, (req, res) => {
     })
 })
 
+router.post('/toggle', checkTokenMiddleware, (req, res) => {
+    const { error, value } = Joi.object<BookAndIssueMixed>({
+        itemId: Joi.number().required(),
+        type: Joi.string().valid('book', 'issue').required()
+    }).validate(req.body)
+
+    if (error) {
+        sendError(res, error.message)
+        return
+    }
+
+    const currentUser = getReqUser(req)
+    const selector = {
+        user: { id: currentUser.id },
+        type: value.type,
+        itemId: value.itemId
+    }
+    // 判断是否存在记录
+    BookShelfRepository.findOne({ where: selector }).then(result => {
+        if (result) {
+            // 删除记录
+            BookShelfRepository.delete(selector).then(result => {
+                if (result.affected) {
+                    sendSuccess(res, '已从书架移除', {
+                        isInBookShelf: false
+                    })
+                } else {
+                    sendError(res, '删除记录失败')
+                }
+            }).catch(_error => {
+                sendError(res, '删除记录失败')
+            })
+        } else {
+            // 插入新记录
+            BookShelfRepository.insert(selector).then(result => {
+                sendSuccess(res, '已添加到书架', {
+                    ...result.generatedMaps[0],
+                    isInBookShelf: true
+                })
+            }).catch(error => {
+                if (error instanceof Error) {
+                    sendError(res, '添加失败')
+                }
+            })
+        }
+    })
+})
+
 export default router
