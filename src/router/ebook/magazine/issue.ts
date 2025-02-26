@@ -32,7 +32,7 @@ router.post('/', checkTokenMiddleware, (req, res) => {
         skip: value.page * value.pageSize
     }).then(async result => {
         for (const item of result) {
-            item.cover = await generateImagePath(item.cover)
+            item.cover = generateImagePath(item.cover)
         }
         sendSuccess(res, '获取成功', result)
     }).catch(error => {

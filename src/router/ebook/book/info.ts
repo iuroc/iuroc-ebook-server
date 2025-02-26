@@ -33,8 +33,8 @@ router.post('/', checkTokenMiddleware, (req, res) => {
             sendError(res, '没有找到该图书')
             return
         }
-        book.cover = await generateImagePath(book.cover)
-        book.bigCover = await generateImagePath(book.bigCover)
+        book.cover = generateImagePath(book.cover)
+        book.bigCover = generateImagePath(book.bigCover)
         const bookInfo: BookInfo = {
             ...book,
             catalogs: addLevels(book.catalogs)
@@ -69,8 +69,8 @@ router.post('/onlyInfo', checkTokenMiddleware, (req, res) => {
             sendError(res, '没有找到该图书')
             return
         }
-        book.cover = await generateImagePath(book.cover)
-        book.bigCover = await generateImagePath(book.bigCover)
+        book.cover = generateImagePath(book.cover)
+        book.bigCover = generateImagePath(book.bigCover)
         sendSuccess(res, '获取成功', book)
     }).catch(error => {
         if (error instanceof Error) {

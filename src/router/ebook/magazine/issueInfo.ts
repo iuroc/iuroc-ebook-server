@@ -33,8 +33,8 @@ router.post('/', checkTokenMiddleware, (req, res) => {
             return
         }
         // issue.catalogs = buildNestedCatalogs(issue.catalogs)
-        issue.cover = await generateImagePath(issue.cover)
-        issue.magazine.cover = await generateImagePath(issue.magazine.cover)
+        issue.cover = generateImagePath(issue.cover)
+        issue.magazine.cover = generateImagePath(issue.magazine.cover)
 
         const issueInfo: IssueInfo = {
             ...issue,
@@ -71,8 +71,8 @@ router.post('/onlyInfo', checkTokenMiddleware, (req, res) => {
             return
         }
         // issue.catalogs = buildNestedCatalogs(issue.catalogs)
-        issue.cover = await generateImagePath(issue.cover)
-        issue.magazine.cover = await generateImagePath(issue.magazine.cover)
+        issue.cover = generateImagePath(issue.cover)
+        issue.magazine.cover = generateImagePath(issue.magazine.cover)
 
         sendSuccess(res, '获取成功', issue)
     }).catch(error => {

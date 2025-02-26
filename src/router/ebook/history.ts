@@ -114,6 +114,7 @@ router.post('/get', checkTokenMiddleware, (req, res) => {
     })
 })
 
+// 更新书刊阅读进度，如果记录不存在则自动创建
 router.post('/update', checkTokenMiddleware, (req, res) => {
     const { error, value } = Joi.object<{
         /** Book 或 Issue 的 ID */
@@ -133,22 +134,51 @@ router.post('/update', checkTokenMiddleware, (req, res) => {
 
     const currentUser = getReqUser(req)
 
-    ReadHistoryRepository.update({
+    const selector = {
         user: { id: currentUser.id },
         type: value.type,
         itemId: value.itemId
-    }, {
-        currentBookPage: value.currentBookPage
-    }).then(result => {
-        if (result.affected) {
-            sendSuccess(res, '更新成功')
+    }
+
+    // 查询记录是否存在
+    ReadHistoryRepository.findOne({
+        where: selector
+    }).then(async result => {
+        if (result) {
+            // 记录存在，更新记录
+            result.currentBookPage = value.currentBookPage
+            await ReadHistoryRepository.save(result)
         } else {
-            sendError(res, '更新失败，记录可能不存在')
+            // 记录不存在，创建记录
+            await ReadHistoryRepository.insert({
+                ...selector,
+                currentBookPage: value.currentBookPage
+            })
         }
-    }).catch(error => {
-        if (error instanceof Error) {
-            sendError(res, '更新失败')
-        }
+        sendSuccess(res, '更新成功')
+    }).catch(_error => {
+        sendError(res, '更新失败')
+    })
+})
+
+router.post('/delete', checkTokenMiddleware, (req, res) => {
+    const { error, value } = Joi.object<{
+        ids: number[]
+    }>({
+        ids: Joi.array().items(Joi.number())
+    }).validate(req.body)
+
+    if (error) {
+        sendError(res, error.message)
+        return
+    }
+
+    ReadHistoryRepository.delete({
+        id: In(value.ids)
+    }).then(result => {
+        sendSuccess(res, `成功删除 ${result.affected} 条记录`)
+    }).catch(() => {
+        sendError(res, '删除失败')
     })
 })
 

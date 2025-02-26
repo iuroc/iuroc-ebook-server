@@ -34,10 +34,10 @@ router.post('/', checkTokenMiddleware, (req, res) => {
         skip: value.page * value.pageSize
     }).then(async result => {
         for (const item of result) {
-            item.cover = await generateImagePath(item.cover)
+            item.cover = generateImagePath(item.cover)
             const book = item as Book
             if (book.bigCover) {
-                book.bigCover = await generateImagePath(book.bigCover)
+                book.bigCover = generateImagePath(book.bigCover)
             }
         }
         sendSuccess(res, '获取成功', result)

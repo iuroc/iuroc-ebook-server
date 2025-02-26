@@ -2,26 +2,31 @@ import { Router } from 'express'
 import { checkTokenMiddleware } from '../../common/checkToken.js'
 import Joi from 'joi'
 import { sendError, sendSuccess } from '../../common/response.js'
-import { BookContentRepository, MagazineContentRepository } from '../../common/ebookDataSource.js'
-import { MoreThan } from 'typeorm'
+import { BookCatalogRepository, BookContentRepository, CatalogRepository, MagazineCatalogRepository, MagazineContentRepository } from '../../common/ebookDataSource.js'
+import { MoreThan, MoreThanOrEqual } from 'typeorm'
 import { BookContent, MagazineContent } from 'gede-book-entity'
 import { BookAndIssueMixed } from '../../entity/ReadHistory.js'
+import * as crypto from 'crypto'
+import { generateImagePath } from '../../common/mixin.js'
+import { addLevels } from './mixin.js'
 
 /** 获取图书或期刊的正文 */
 const router = Router()
 
-router.post('/', checkTokenMiddleware, (req, res) => {
+router.post('/', checkTokenMiddleware, async (req, res) => {
     const { error, value } = Joi.object<{
         type: BookAndIssueMixed['type'],
         /** Book 或 Issue 的 ID */
         itemId: number
         startBookPage: number
         bookPageCount: number
+        needCatalog: boolean
     }>({
         type: Joi.valid('book', 'issue').required(),
         itemId: Joi.number().required(),
         startBookPage: Joi.number().min(1).default(1),
         bookPageCount: Joi.number().default(30).max(120),
+        needCatalog: Joi.boolean().default(true)
     }).validate(req.body)
 
     if (error) {
@@ -65,26 +70,68 @@ router.post('/', checkTokenMiddleware, (req, res) => {
      * catalog 查询时，前端传入的是 bookPage
      */
 
+    const catalogRepository = value.type == 'book' ? BookCatalogRepository : MagazineCatalogRepository
+    const contentRepository = value.type == 'book' ? BookContentRepository : MagazineContentRepository
 
-    (value.type == 'book' ? BookContentRepository : MagazineContentRepository).find({
-        where: {
-            ...(value.type == 'book'
-                ? { book: { id: value.itemId } }
-                : { issue: { id: value.itemId } }
-            ),
-            index: MoreThan(value.startBookPage - 1),
-        },
-        take: value.bookPageCount,
-        order: {
-            index: 'ASC'
+    const getCatalogs = async () => {
+        return catalogRepository.find({
+            where: {
+                ...(value.type == 'book'
+                    ? { book: { id: value.itemId } }
+                    : { issue: { id: value.itemId } }
+                ),
+            }
+        })
+    }
+
+    const getContents = async () => {
+        return contentRepository.find({
+            where: {
+                ...(value.type == 'book'
+                    ? { book: { id: value.itemId } }
+                    : { issue: { id: value.itemId } }
+                ),
+                index: MoreThanOrEqual(value.startBookPage - 1),
+            },
+            take: value.bookPageCount,
+            order: {
+                index: 'ASC'
+            }
+        }).then(result => {
+            result.forEach(item => {
+                item.content = convertHtml(item.content)
+            })
+            return result
+        })
+    }
+
+    try {
+        sendSuccess(res, '获取成功', {
+            contents: await getContents(),
+            catalogs: value.needCatalog ? await getCatalogs() : null
+        })
+    } catch (error) {
+        if (error instanceof Error) {
+            sendError(res, error.message)
         }
-    }).then(result => {
-        if (value.type == 'book') {
-            sendSuccess(res, '获取成功', result as BookContent[])
-        } else {
-            sendSuccess(res, '获取成功', result as MagazineContent[])
-        }
-    })
+    }
 })
 
 export default router
+
+function convertHtml(html: string) {
+    html = convertImgSrcToSha1(html)
+    return html
+}
+
+/**
+ * 将 HTML 中所有 img 标签的 src 地址转换为 SHA1 编码后的 .jpg 文件名
+ * @param html - 输入的 HTML 字符串
+ * @returns 返回转换后的 HTML 字符串
+ */
+function convertImgSrcToSha1(html: string): string {
+    const imgTagRegex = /<img\s+[^>]*src=["']([^"']+)["'][^>]*>/g
+    return html.replace(imgTagRegex, (match, src) => {
+        return match.replace(src, generateImagePath(src))
+    })
+}
