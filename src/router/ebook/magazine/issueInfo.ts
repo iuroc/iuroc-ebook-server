@@ -29,7 +29,7 @@ router.post('/', checkTokenMiddleware, (req, res) => {
         relations: ['catalogs', 'magazine']
     }).then(async issue => {
         if (!issue) {
-            sendError(res, '没有找到该图书')
+            sendError(res, '没有找到该期刊')
             return
         }
         // issue.catalogs = buildNestedCatalogs(issue.catalogs)
@@ -41,6 +41,40 @@ router.post('/', checkTokenMiddleware, (req, res) => {
             catalogs: addLevels(issue.catalogs)
         }
         sendSuccess(res, '获取成功', issueInfo)
+    }).catch(error => {
+        if (error instanceof Error) {
+            sendError(res, error.message)
+        }
+    })
+})
+
+router.post('/onlyInfo', checkTokenMiddleware, (req, res) => {
+    const { error, value } = Joi.object<{
+        issueId: number
+    }>({
+        issueId: Joi.number().required()
+    }).validate(req.body)
+
+    if (error) {
+        sendError(res, error.message)
+        return
+    }
+
+    IssueRepository.findOne({
+        where: {
+            id: value.issueId,
+        },
+        relations: ['magazine']
+    }).then(async issue => {
+        if (!issue) {
+            sendError(res, '没有找到该期刊')
+            return
+        }
+        // issue.catalogs = buildNestedCatalogs(issue.catalogs)
+        issue.cover = await generateImagePath(issue.cover)
+        issue.magazine.cover = await generateImagePath(issue.magazine.cover)
+
+        sendSuccess(res, '获取成功', issue)
     }).catch(error => {
         if (error instanceof Error) {
             sendError(res, error.message)

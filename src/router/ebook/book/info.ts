@@ -48,7 +48,36 @@ router.post('/', checkTokenMiddleware, (req, res) => {
     })
 })
 
+router.post('/onlyInfo', checkTokenMiddleware, (req, res) => {
+    const { error, value } = Joi.object<{
+        bookId: number
+    }>({
+        bookId: Joi.number().required()
+    }).validate(req.body)
 
+    if (error) {
+        sendError(res, error.message)
+        return
+    }
+
+    BookRepository.findOne({
+        where: {
+            id: value.bookId,
+        },
+    }).then(async book => {
+        if (!book) {
+            sendError(res, '没有找到该图书')
+            return
+        }
+        book.cover = await generateImagePath(book.cover)
+        book.bigCover = await generateImagePath(book.bigCover)
+        sendSuccess(res, '获取成功', book)
+    }).catch(error => {
+        if (error instanceof Error) {
+            sendError(res, error.message)
+        }
+    })
+})
 
 export default router
 
