@@ -74,14 +74,15 @@ router.post('/', checkTokenMiddleware, async (req, res) => {
     const contentRepository = value.type == 'book' ? BookContentRepository : MagazineContentRepository
 
     const getCatalogs = async () => {
-        return catalogRepository.find({
+        const catalogs = await catalogRepository.find({
             where: {
                 ...(value.type == 'book'
                     ? { book: { id: value.itemId } }
                     : { issue: { id: value.itemId } }
                 ),
-            }
+            },
         })
+        return addLevels(catalogs)
     }
 
     const getContents = async () => {
