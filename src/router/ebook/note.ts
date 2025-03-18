@@ -66,6 +66,33 @@ router.post('/edit', checkTokenMiddleware, (req, res) => {
     })
 })
 
+router.post('/get', checkTokenMiddleware, (req, res) => {
+    const user = getReqUser(req)
+    const { error, value } = Joi.object<{
+        id: number
+    }>({
+        id: Joi.number().required(),
+    }).validate(req.body)
+
+    if (error) {
+        sendError(res, error.message)
+        return
+    }
+
+    NoteRepository.findOne({
+        where: { user: { id: user.id }, id: value.id }
+    }).then(result => {
+        if (result) {
+            sendSuccess(res, '获取成功', result)
+        } else {
+            throw new Error('获取失败')
+        }
+    }).catch((error: Error) => {
+        sendError(res, error.message)
+    })
+})
+
+
 router.post('/delete', checkTokenMiddleware, (req, res) => {
     const user = getReqUser(req)
     const { error, value } = Joi.object<{
