@@ -115,7 +115,7 @@ router.post('/list', checkTokenMiddleware, (req, res) => {
     }).then(result => {
         const processedResult = result.map(note => ({
             ...note,
-            content: note.content.substring(0, 40) // 截取前40个字符
+            content: note.content.substring(0, 40).replaceAll(/\s/g, '') // 截取前40个字符
         }))
         sendSuccess(res, '获取成功', processedResult)
     }).catch((error: Error) => {
