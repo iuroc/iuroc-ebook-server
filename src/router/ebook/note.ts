@@ -113,7 +113,11 @@ router.post('/list', checkTokenMiddleware, (req, res) => {
         take: value.pageSize,
         skip: value.page * value.pageSize
     }).then(result => {
-        sendSuccess(res, '获取成功', result)
+        const processedResult = result.map(note => ({
+            ...note,
+            content: note.content.substring(0, 40) // 截取前40个字符
+        }))
+        sendSuccess(res, '获取成功', processedResult)
     }).catch((error: Error) => {
         sendError(res, error.message)
     })
