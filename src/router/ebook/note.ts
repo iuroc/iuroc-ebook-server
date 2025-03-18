@@ -57,7 +57,7 @@ router.post('/edit', checkTokenMiddleware, (req, res) => {
         content: value.content,
     }).then(result => {
         if (result.affected) {
-            sendSuccess(res, '更新成功', result.generatedMaps)
+            sendSuccess(res, '更新成功')
         } else {
             throw new Error('更新失败')
         }
@@ -142,7 +142,7 @@ router.post('/list', checkTokenMiddleware, (req, res) => {
     }).then(result => {
         const processedResult = result.map(note => ({
             ...note,
-            content: note.content.substring(0, 40).replaceAll(/\s/g, '') // 截取前40个字符
+            content: note.content.substring(0, 80).replaceAll(/\s/g, ' ') // 截取前80个字符
         }))
         sendSuccess(res, '获取成功', processedResult)
     }).catch((error: Error) => {

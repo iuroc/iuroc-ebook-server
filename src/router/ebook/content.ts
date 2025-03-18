@@ -2,9 +2,9 @@ import { Router } from 'express'
 import { checkTokenMiddleware } from '../../common/checkToken.js'
 import Joi from 'joi'
 import { sendError, sendSuccess } from '../../common/response.js'
-import { BookCatalogRepository, BookContentRepository, CatalogRepository, MagazineCatalogRepository, MagazineContentRepository } from '../../common/ebookDataSource.js'
+import { BookCatalogRepository, BookContentRepository, BookRepository, CatalogRepository, IssueRepository, MagazineCatalogRepository, MagazineContentRepository } from '../../common/ebookDataSource.js'
 import { MoreThan, MoreThanOrEqual } from 'typeorm'
-import { BookContent, MagazineContent } from 'gede-book-entity'
+import { BookContent, Magazine, MagazineContent } from 'gede-book-entity'
 import { BookAndIssueMixed } from '../../entity/ReadHistory.js'
 import * as crypto from 'crypto'
 import { generateImagePath } from '../../common/mixin.js'
@@ -72,6 +72,7 @@ router.post('/', checkTokenMiddleware, async (req, res) => {
 
     const catalogRepository = value.type == 'book' ? BookCatalogRepository : MagazineCatalogRepository
     const contentRepository = value.type == 'book' ? BookContentRepository : MagazineContentRepository
+    const infoRepository = value.type == 'book' ? BookRepository : IssueRepository
 
     const getCatalogs = async () => {
         const catalogs = await catalogRepository.find({
@@ -106,10 +107,20 @@ router.post('/', checkTokenMiddleware, async (req, res) => {
         })
     }
 
+    const getInfo = async () => {
+        return infoRepository.findOne({
+            where: {
+                id: value.itemId
+            },
+            relations: value.type == 'issue' ? ['magazine'] : []
+        })
+    }
+
     try {
         sendSuccess(res, '获取成功', {
             contents: await getContents(),
-            catalogs: value.needCatalog ? await getCatalogs() : null
+            catalogs: value.needCatalog ? await getCatalogs() : null,
+            info: await getInfo()
         })
     } catch (error) {
         if (error instanceof Error) {
