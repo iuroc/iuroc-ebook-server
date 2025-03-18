@@ -1,6 +1,7 @@
 import { Column, CreateDateColumn, Entity, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { BookShelf } from './BookShelf.js'
 import { ReadHistory } from './ReadHistory.js'
+import { Note } from './Note.js'
 
 @Entity({ comment: '用户表' })
 export class User {
@@ -23,4 +24,7 @@ export class User {
 
     @OneToMany(() => ReadHistory, readHistory => readHistory.user)
     readHistorys?: ReadHistory[]
+
+    @OneToMany(() => Note, note => note.user)
+    notes?: Note[]
 }
