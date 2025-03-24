@@ -11,6 +11,7 @@ import ebookItemRouter from './router/ebook/item.js'
 import ebookContentRouter from './router/ebook/content.js'
 import ebookHistoryRouter from './router/ebook/history.js'
 import ebookBookShelfRouter from './router/ebook/bookShelf.js'
+import bookMarkRouter from './router/ebook/bookMark.js'
 import ebookNoteRouter from './router/ebook/note.js'
 import { sendError } from './common/response.js'
 import { EbookConfig } from './common/config.js'
@@ -40,6 +41,7 @@ router.use('/api/ebook/content', ebookContentRouter)
 router.use('/api/ebook/history', ebookHistoryRouter)
 router.use('/api/ebook/bookShelf', ebookBookShelfRouter)
 router.use('/api/ebook/note', ebookNoteRouter)
+router.use('/api/ebook/bookMark', bookMarkRouter)
 
 // [/api/openai]
 

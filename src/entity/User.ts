@@ -2,6 +2,7 @@ import { Column, CreateDateColumn, Entity, Index, OneToMany, PrimaryGeneratedCol
 import { BookShelf } from './BookShelf.js'
 import { ReadHistory } from './ReadHistory.js'
 import { Note } from './Note.js'
+import { BookMark } from './BookMark.js'
 
 @Entity({ comment: '用户表' })
 export class User {
@@ -24,6 +25,9 @@ export class User {
 
     @OneToMany(() => ReadHistory, readHistory => readHistory.user)
     readHistorys?: ReadHistory[]
+
+    @OneToMany(() => BookMark, bookMark => bookMark.user)
+    bookMarks?: BookMark[]
 
     @OneToMany(() => Note, note => note.user)
     notes?: Note[]
