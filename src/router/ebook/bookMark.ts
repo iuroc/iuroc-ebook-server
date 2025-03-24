@@ -47,7 +47,7 @@ router.post('/toggle', checkTokenMiddleware, (req, res) => {
                 type: value.type,
                 user: { id: user.id },
             })
-            sendSuccess(res, '添加书签成功', result.generatedMaps)
+            sendSuccess(res, '添加书签成功', result.generatedMaps[0])
         }
     }).catch((error: Error) => {
         sendError(res, '操作失败：' + error.message)

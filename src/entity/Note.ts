@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 import { User } from './User.js'
 
 @Entity()
@@ -17,4 +17,7 @@ export class Note {
 
     @CreateDateColumn()
     createAt!: Date
+
+    @UpdateDateColumn()
+    updateAt!: Date
 }
