@@ -7,6 +7,7 @@ import { BookRepository, IssueRepository } from '../../common/ebookDataSource.js
 import { In } from 'typeorm'
 import { BookAndIssueMixed, ReadHistory } from '../../entity/ReadHistory.js'
 import { Book, Issue } from 'gede-book-entity'
+import { generateImagePath } from '../../common/mixin.js'
 
 const router = Router()
 
@@ -57,7 +58,8 @@ export async function makeBookAndIssueMixedList(items: BookAndIssueMixed[]) {
     const issues = await IssueRepository.find({
         where: {
             id: In(issueIds)
-        }
+        },
+        relations: ['magazine']
     })
     // 使用 Map 将 id 映射到对应的实体，以便根据 itemId 快速查找
     const bookMap = new Map(books.map(book => [book.id, book]))
@@ -68,6 +70,8 @@ export async function makeBookAndIssueMixedList(items: BookAndIssueMixed[]) {
         if (item.type === 'book') {
             const book = bookMap.get(item.itemId)
             if (book) {
+                book.cover = generateImagePath(book.cover)
+                book.bigCover = generateImagePath(book.bigCover)
                 list.push({
                     item: item,
                     data: book,
@@ -76,6 +80,7 @@ export async function makeBookAndIssueMixedList(items: BookAndIssueMixed[]) {
         } else if (item.type === 'issue') {
             const issue = issueMap.get(item.itemId)
             if (issue) {
+                issue.cover = generateImagePath(issue.cover)
                 list.push({
                     item: item,
                     data: issue,
