@@ -26,5 +26,7 @@ export const EbookConfig = {
     } as MysqlConnectionCredentialsOptions,
 
     /** 图片资源目录 */
-    imageDir: 'E:/其他文件/数据库备份/iuroc-ebook-images-3381845'
+    imageDir: 'E:/其他文件/数据库备份/iuroc-ebook-images-3381845',
+    /** 是否使用本地磁盘图片资源，否则直接使用网络图片资源 */
+    useLocalImage: true
 }
